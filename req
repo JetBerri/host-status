@@ -1,0 +1,65 @@
+#!/bin/bash
+
+clear
+
+if [ "$EUID" -ne 0 ]; then
+    echo "Esta script debe ser ejecutada como root. Por favor, ejecute la script con sudo o como root."
+    exit
+fi
+echo -e "\n"
+if command -v python3 &>/dev/null; then
+    echo "Python está instalado."
+else
+    echo "Python no está instalado. Instalando Python..."
+    sudo apt-get update
+    sudo apt-get install -y python3
+fi
+echo -e "\n"
+if command -v pip3 &>/dev/null; then
+    echo "pip está instalado."
+else
+    echo "pip no está instalado. Instalando pip..."
+    sudo apt-get update
+    sudo apt-get install -y python3-pip
+fi
+echo -e "\n"
+if command -v nmap &>/dev/null; then
+    echo "nmap está instalado."
+else
+    echo "nmap no está instalado. Instalando nmap..."
+    sudo apt-get update
+    sudo apt-get install -y nmap
+fi
+echo -e "\n"
+if python3 -c "import nmap" &>/dev/null; then
+    echo "La biblioteca de nmap para Python está instalada."
+else
+    echo "La biblioteca de nmap para Python no está instalada. Instalando la biblioteca de nmap para Python..."
+    sudo pip3 install python-nmap
+fi
+echo -e "\n"
+if command -v searchsploit &>/dev/null; then
+    echo "searchsploit está instalado."
+else
+    echo "searchsploit no está instalado. Instalando searchsploit..."
+    sudo apt-get update
+    sudo snap install searchsploit
+fi
+echo -e "\n"
+if command -v npm &>/dev/null; then
+    echo "npm está instalado."
+else
+    echo "npm no está instalado. Instalando searchsploit..."
+    sudo apt-get update
+    sudo apt-get install -y npm
+fi
+echo -e "\n"
+if command -v mjml &>/dev/null; then
+    echo "mjml está instalado."
+else
+    echo "mjml no está instalado. Instalando searchsploit..."
+    sudo apt-get update
+    sudo npm install -g mjml
+fi
+echo -e "\n"
+echo "Todos los paquetes y bibliotecas requeridos han sido instalados correctamente."

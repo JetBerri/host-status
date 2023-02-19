@@ -1,0 +1,99 @@
+<mjml>
+    <mj-head>
+        <mj-style>
+            .space-background {
+                background-color: #0B0E1B;
+                background-image: url("https://i.imgur.com/T1vDxhH.png");
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+            .content {
+                background-color: #1C1F3D;
+                border-radius: 4px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+                margin: 50px auto;
+                max-width: 600px;
+                padding: 30px;
+                text-align: center;
+            }
+            .content h1 {
+                color: #fff;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 40px;
+                font-weight: 900;
+                margin-bottom: 20px;
+            }
+            .content p {
+                color: #fff;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 18px;
+                line-height: 1.6;
+            }
+            .file-link {
+                background-color: #fff;
+                border-radius: 4px;
+                color: #1C1F3D;
+                display: inline-block;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 16px;
+                margin: 20px auto;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
+            .file-link:hover {
+                background-color: #2E335F;
+                color: #fff;
+            }
+        </mj-style>
+    </mj-head>
+    <mj-body>
+        <mj-container class="space-background">
+            <mj-section>
+                <mj-column>
+                        <mj-text>
+                            <h1>Archivos adjuntos</h1>
+                            <p>A continuación se encuentran los archivos adjuntos que coinciden con nombres de IP.</p>
+                        </mj-text>
+        
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/95.217.160.224.yaml" download>Archivo YAML</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/95.217.160.224.txt" download>Archivo TXT</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/135.181.254.224.yaml" download>Archivo YAML</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/65.108.86.199.yaml" download>Archivo YAML</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/185.170.212.224.yaml" download>Archivo YAML</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/65.108.86.199.txt" download>Archivo TXT</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/135.181.254.224.txt" download>Archivo TXT</a>
+                        </mj-text>
+                            
+                        <mj-text>
+                            <a class="file-link" href="http://localhost/log/185.170.212.224.txt" download>Archivo TXT</a>
+                        </mj-text>
+                            
+                    </mj-div>
+                </mj-column>
+            </mj-section>
+        </mj-container>
+    </mj-body>
+</mjml>
+        

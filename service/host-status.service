@@ -1,0 +1,11 @@
+[Unit]
+Description=Servicio para ejecutar main.py cada 60 minutos
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /ruta/hacia/main.py
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
