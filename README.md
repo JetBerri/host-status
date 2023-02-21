@@ -1,16 +1,20 @@
-# Instalación y Ejecución
+# Installation and Execution
 
-Ejecuta el siguiente comando en la ruta del programa:
+Run the following command in the program directory:
+```
+chmod +x req
+```
+And then:
 ```
 sudo ./req
 ```
-Se instalarán todas las dependencias en el caso de que no estén instaladas.
+All dependencies will be installed in case they are not installed..
 
-Para ejecutar el programa solo tendrás que ejecutar el siguiente comando:
+To run the program, simply execute the following command::
 ```
 python3 main.py
 ```
 
-# Servicio
+# Service
 
-Para instalarlo como servicio descarga este instalador y ejecútalo con permisos de adminstrador.
+To install it as a service, download this installer and run it with administrator privileges.

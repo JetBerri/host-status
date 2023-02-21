@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CONFIG_FILE="/opt/host-status/scripts/config/credentials.json"
+SENDER_EMAIL=$(jq -r '.sender_email' "$CONFIG_FILE")
+SENDER_PASSWORD=$(jq -r '.sender_password' "$CONFIG_FILE")
+RECIPIENT_EMAIL=$(jq -r '.recipient_email' "$CONFIG_FILE")
+SUBJECT=$(jq -r '.subject' "$CONFIG_FILE")
+HTML_FILE="/opt/host-status/scripts/mail/mail.html"
+
+HTML=$(cat "$HTML_FILE")
+BODY="From: $SENDER_EMAIL\nTo: $RECIPIENT_EMAIL\nSubject: $SUBJECT\nMIME-Version: 1.0\nContent-Type: text/html\n\n$HTML"
+
+curl -vvv "smtps://correo.byrne.quersys.com:465" \
+    --mail-from "$SENDER_EMAIL" \
+    --mail-rcpt "$RECIPIENT_EMAIL" \
+    --user "$SENDER_EMAIL:$SENDER_PASSWORD" \
+    --ssl-req -k \
+    --data-binary "$BODY"

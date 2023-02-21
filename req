@@ -1,65 +1,156 @@
 #!/bin/bash
 
-clear
+function print_centered() {
+    local terminal_width=$(tput cols)
+    local message="$1"
+    local message_width=${#message}
 
-if [ "$EUID" -ne 0 ]; then
-    echo "Esta script debe ser ejecutada como root. Por favor, ejecute la script con sudo o como root."
-    exit
-fi
-echo -e "\n"
-if command -v python3 &>/dev/null; then
-    echo "Python está instalado."
-else
-    echo "Python no está instalado. Instalando Python..."
-    sudo apt-get update
-    sudo apt-get install -y python3
-fi
-echo -e "\n"
-if command -v pip3 &>/dev/null; then
-    echo "pip está instalado."
-else
-    echo "pip no está instalado. Instalando pip..."
-    sudo apt-get update
-    sudo apt-get install -y python3-pip
-fi
-echo -e "\n"
-if command -v nmap &>/dev/null; then
-    echo "nmap está instalado."
-else
-    echo "nmap no está instalado. Instalando nmap..."
-    sudo apt-get update
-    sudo apt-get install -y nmap
-fi
-echo -e "\n"
-if python3 -c "import nmap" &>/dev/null; then
-    echo "La biblioteca de nmap para Python está instalada."
-else
-    echo "La biblioteca de nmap para Python no está instalada. Instalando la biblioteca de nmap para Python..."
-    sudo pip3 install python-nmap
-fi
-echo -e "\n"
-if command -v searchsploit &>/dev/null; then
-    echo "searchsploit está instalado."
-else
-    echo "searchsploit no está instalado. Instalando searchsploit..."
-    sudo apt-get update
-    sudo snap install searchsploit
-fi
-echo -e "\n"
-if command -v npm &>/dev/null; then
-    echo "npm está instalado."
-else
-    echo "npm no está instalado. Instalando searchsploit..."
-    sudo apt-get update
-    sudo apt-get install -y npm
-fi
-echo -e "\n"
+    local left_padding=$(( (terminal_width - message_width) / 2 ))
+    local right_padding=$(( terminal_width - message_width - left_padding ))
+
+    printf "%${left_padding}s%s%${right_padding}s\n" "" "$message" ""
+}
+
+function print_horizontal_line() {
+    local terminal_width=$(tput cols)
+    printf "%${terminal_width}s\n" "" | tr ' ' '-'
+}
+
+function print_title() {
+    print_horizontal_line
+    print_centered "$1"
+    print_horizontal_line
+}
+
+
+function print_success() {
+    echo -e "\033[32m[SUCCESS]\033[0m $1"
+}
+
+function print_error() {
+    echo -e "\033[31m[ERROR]\033[0m $1"
+}
+
+function print_warning() {
+    echo -e "\033[33m[WARNING]\033[0m $1"
+}
+
+function print_info() {
+    echo -e "\033[34m[INFO]\033[0m $1"
+}
+
+function check_superuser() {
+    if [ "$EUID" -ne 0 ]; then
+        print_error "This script must be run with root permissions. Please run the script with sudo or as root."
+        exit 1
+    fi
+}
+
+function check_package_installed() {
+    local package_name=$1
+    if command -v "$package_name" &>/dev/null; then
+        print_success "$package_name is installed."
+        return 0
+    else
+        print_warning "$package_name isn't installed."
+        return 1
+    fi
+}
+
+function install_package() {
+    local package_name=$1
+    print_info "Installing $package_name..."
+    if sudo apt-get install -y "$package_name"; then
+        print_success "$package_name has been installed succesfully."
+        return 0
+    else
+        print_error "Couldn't install $package_name."
+        return 1
+    fi
+}
+
+function check_python_package_installed() {
+    local package_name=$1
+    if python3 -c "import $package_name" &>/dev/null; then
+        print_success "$package_name is installed."
+        return 0
+    else
+        print_warning "$package_name isn't installed."
+        return 1
+    fi
+}
+
+function install_python_package() {
+    local package_name=$1
+    print_info "Installing $package_name..."
+    if sudo pip3 install "$package_name"; then
+        print_success "$package_name has been installed succesfully."
+        return 0
+    else
+        print_error "Couldn't install $package_name."
+        return 1
+
+    fi
+
+}
+
+echo -e "\n\n\e[1m\e[32mInstalling required packages and libraries...\e[0m"
+
+
+
+declare -A packages=(
+    ["python3"]="Python"
+    ["python3-pip"]="pip"
+    ["nmap"]="nmap"
+    ["searchsploit"]="searchsploit"
+    ["npm"]="npm"
+)
+
+declare -a libraries=(
+    "python-nmap"
+)
+
+for package in "${!packages[@]}"; do
+    if command -v "$package" &>/dev/null; then
+        echo "${packages[$package]} is installed."
+    else
+        echo "${packages[$package]} is not installed. Installing ${packages[$package]}..."
+        sudo apt-get update
+        sudo apt-get install -y "$package"
+    fi
+done
+
+for library in "${libraries[@]}"; do
+    if python3 -c "import $library" &>/dev/null; then
+        echo "The $library library for Python is installed."
+    else
+        echo "The $library library for Python is not installed. Installing the $library library for Python..."
+        sudo pip3 install "$library"
+    fi
+done
+
 if command -v mjml &>/dev/null; then
-    echo "mjml está instalado."
+    echo "mjml is installed."
 else
-    echo "mjml no está instalado. Instalando searchsploit..."
-    sudo apt-get update
+    echo "mjml is not installed. Installing mjml..."
     sudo npm install -g mjml
 fi
-echo -e "\n"
-echo "Todos los paquetes y bibliotecas requeridos han sido instalados correctamente."
+
+if command -v jq &>/dev/null; then
+    echo "jq is installed."
+else
+    echo "jq is not installed. Installing jq..."
+    sudo apt install jq
+fi
+
+echo -e "\n\e[1m\e[32mAll required packages and libraries have been installed successfully.\e[0m"
+
+echo -e "\n\e[1m\e[32mDo you want to install host-status as a service? [y/N]\e[0m"
+read -r install_service
+
+if [[ "$install_service" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    sudo chmod +x /opt/host-status/service/service
+    sudo ln -s /opt/host-status/service/service /etc/init.d/host-status
+    sudo update-rc.d host-status defaults
+    echo -e "\n\e[1m\e[32mhost-status has been installed as a service.\e[0m"
+fi

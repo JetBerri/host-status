@@ -5,11 +5,11 @@ def mjml():
 
     ip_pattern = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b')
 
-    directory = "log/"
+    directory = "/opt/host-status/scripts/log/"
 
     files = os.listdir(directory)
 
-    with open("index.mjml", "w") as f:
+    with open("/opt/host-status/scripts/index.mjml", "w") as f:
         f.write(f"""
 <mjml>
     <mj-head>
@@ -67,8 +67,8 @@ def mjml():
             <mj-section>
                 <mj-column>
                         <mj-text>
-                            <h1>Archivos adjuntos</h1>
-                            <p>A continuación se encuentran los archivos adjuntos que coinciden con nombres de IP.</p>
+                            <h1>Attached files</h1>
+                            <p>Here are the scanned IP addresses.</p>
                         </mj-text>
         """)
 

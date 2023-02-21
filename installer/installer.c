@@ -6,24 +6,24 @@
 
 int main() {
     if (geteuid() != 0) {
-        fatal("Este programa debe ser ejecutado como root\n");
+        fatal("This program must be executed as root!\n");
     }
 
-    int status = system("curl -o /etc/host-status/req https://ruta/del/archivo/req");
+    int status = system("curl -o /opt/host-status/req https://github.com/JetBerri/host-status.git");
     if (status == -1) {
-        fatal("Error: No se pudo descargar el archivo 'req'\n");
+        fatal("Error: Couldn't load the installation file 'req'\n");
     }
 
     status = system("chmod +x /etc/host-status/req");
     if (status == -1) {
-        fatal("Error: No se pudo establecer los permisos del archivo 'req'\n");
+        fatal("Error: Couldn't set file permissions 'req'\n");
     }
 
     status = system("sudo /etc/host-status/req");
     if (status == -1) {
-        fatal("Error: No se pudo ejecutar el archivo 'req'\n");
+        fatal("Error: Couldn't execute file 'req'\n");
     }
 
-    printf("La instalación ha sido completada con éxito\n");
+    printf("The installation has been completed successfully\n");
     return 0;
 }
