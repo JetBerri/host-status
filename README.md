@@ -15,26 +15,26 @@ ips:
 
 **INSTALLATION**
 
-# 1. Clone the repository
+### 1. Clone the repository
 
 ```
 git clone https://github.com/your-username/host-status.git
 cd host-status
 ```
 
-# 2. Set permissions
+### 2. Set permissions
 
 ```
 chmod +x req
 ```
 
-# 3. Run dependency installer 
+### 3. Run dependency installer 
 
 ```
 sudo ./req
 ```
 
-# 4. Run the program
+### 4. Run the program
 
 ```
 python3 main.py
