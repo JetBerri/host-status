@@ -46,31 +46,48 @@ def bot():
         print(f"Scan results for IP {ip} have been logged in file {filename}.")
 
 
+def check_sudo():
+
+    os.geteuid() == 0
+
+    return os.geteuid()
+
+
 def main():
-    try:
-        print(Fore.RED + "IPS TO SCAN" + Fore.RESET)
 
-        with open('/opt/host-status/scripts/config/ips.yaml') as f:
-            ips = yaml.load_all(f, Loader=yaml.FullLoader)
+    if check_sudo():
 
-            for ip in ips:
-                for k, v in ip.items():
-                    print(k, "->", v)
+        print(f"{Fore.RED} PLEASE RUN THE PROGRAM AS SUPERUSER {Fore.RESET} [sudo python3 main.py] ")
 
-        scan = input("Continue? [y/n]: ")
+    else:
 
-        if "y" in scan:
-            bot()
-            mjml()
-            os.system("sudo npm install mjml --prefix /opt/host-status/scripts/")
-            os.system("node /opt/host-status/scripts/mjml.js")
-            os.system("bash /opt/host-status/scripts/smpt")
-        else:
-            sys.exit(1)
+        print("running as superuser...")
 
-    except Exception as err:
-        print(err)
+        try:
+            print(Fore.RED + "IPS TO SCAN" + Fore.RESET)
 
+            with open('/opt/host-status/scripts/config/ips.yaml') as f:
+                ips = yaml.load_all(f, Loader=yaml.FullLoader)
+
+                for ip in ips:
+                    for k, v in ip.items():
+                        print(k, "->", v)
+
+            scan = input("Continue? [y/n]: ")
+
+            if "y" in scan:
+                bot()
+                mjml()
+                os.system("sudo npm install mjml --prefix /opt/host-status/scripts/")
+                os.system("node /opt/host-status/scripts/mjml.js")
+                os.system("bash /opt/host-status/scripts/smpt")
+            else:
+                os.system("clear")
+                print("edit 'scripts/config/ips.yaml'")
+                sys.exit(1)
+
+        except Exception as err:
+            print(err)
 
 if __name__ == "__main__":
     main()
